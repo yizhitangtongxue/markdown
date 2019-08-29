@@ -1,24 +1,19 @@
-### Heroku 学习笔记
-
-#### heroku login 
-登录 Heroku
-
+## Heroku 学习笔记
 ---
-#### heroku keys:add
-添加 SSH Key 到 Heroku 上
+### 登录 Heroku
+heroku login 
 
----
-#### heroku create
-创建一个 Heroku App
+### 添加 SSH Key 到 Heroku 上
+heroku keys:add
 
----
-#### echo web: vendor/bin/heroku-php-apache2 public/ >Procfile
-配置 Procfile文件
+### 创建一个 Heroku App
+heroku create
 
----
-#### heroku buildpacks:set heroku/php
-声明 buildpack 说明程序为PHP写的
+### 配置 Procfile文件
+echo web: vendor/bin/heroku-php-apache2 public/ >Procfile
 
----
-#### heroku rename your-app-name
- 对应用改名
+### 声明 buildpack 说明程序为PHP写的
+heroku buildpacks:set heroku/php
+
+### 对应用改名
+heroku rename your-app-name
