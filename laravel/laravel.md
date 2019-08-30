@@ -1,5 +1,8 @@
 ### Laravel 学习笔记
 
+#### 约定成俗
+1. 被@include() 的文件应该用下划线开头，比如_header.blade.php
+
 #### Env方法
 1. getenv('APP_ENV')获得.env配置文件中的APP_ENV对应的值
 
@@ -18,3 +21,17 @@
 12. php artisan route:list 查看路由列表
 13. php artisan list 查看所有可用的Artisan命令
 14. php artisan help xxx 查看以上各个命令的帮助
+
+#### 模版语法
+1. @extends('layouts.default') 继承/resources/views/layouts/default.blade.php
+2. @yield('content','default value') 预定义可替代的区块
+> 配合@section('@yield的第一个参数名')
+>> @section需要配合@stop结束当前@section区块的解析
+3. @section('@yield的第一个参数名') 填充@yield('参数')区块的内容
+4. @stop结束@section的区块的解析
+5. {{ route('路由的name名称') }} 用于代替传统的 Url ，批量改动 Url 时，只需要改动路由 web.php 文件即可
+> 需配合 Route::get('/path','SomesController@path')->name('somename'); 使用
+6. @include('folders.filenamewithout.blade.php') 引入文件，无需写.blade.php
+
+#### 路由
+1. Route::get('/path','SomesController@path')->name('somename'); 指定访问 localhost/path 跳转到 SomesController 下的 path 方法，并为此路由定义了一个 somename 的名称
