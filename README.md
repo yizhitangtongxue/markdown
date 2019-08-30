@@ -1,7 +1,5 @@
 # 一些笔记的集合
 
-#### [Laravel](#laravel)
+#### [Laravel](./laravel/laravel.md)
 
-#### [heroku](#heroku)
-
-#### [vue](#vue)
+#### [Heroku](./heroku/heroku.md)
