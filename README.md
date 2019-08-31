@@ -1,6 +1,6 @@
 # 一些笔记的集合
 
-## [Spring](./heroku/Spring.md)
+## [Spring](./spring/Spring.md)
 
 ## [Laravel](./laravel/laravel.md)
 
