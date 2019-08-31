@@ -70,7 +70,7 @@
 ## 控制反转和依赖注入的简单演示
 
 ```xml
-<!-- 将类的创建权交给了 Spring -->
+<!-- 将对象的创建权交给了 Spring -->
 <bean id="userService" class="com.github.demo1.ClassImpl"> <!-- 此处就是控制反转 -->
     <!-- 设置属性 -->
     <property name="属性名称" value="属性值"/> <!-- 此处就是依赖注入 -->
