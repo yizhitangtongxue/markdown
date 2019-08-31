@@ -2,7 +2,8 @@
 
 #### 约定成俗
 1. 被@include() 的文件应该用下划线开头，比如_header.blade.php
-
+2. 控制器命名应该是复数形式+Controller
+3. 模型命名应该是单数形式
 #### Env方法
 1. getenv('APP_ENV')获得.env配置文件中的APP_ENV对应的值
 
@@ -29,7 +30,7 @@
 >> @section需要配合@stop结束当前@section区块的解析
 3. @section('@yield的第一个参数名') 填充@yield('参数')区块的内容
 4. @stop结束@section的区块的解析
-5. {{ route('路由的name名称') }} 用于代替传统的 Url ，批量改动 Url 时，只需要改动路由 web.php 文件即可
+5. {{ route('somename') }} 用于代替传统的 Url ，批量改动 Url 时，只需要改动路由 web.php 文件即可
 > 需配合 Route::get('/path','SomesController@path')->name('somename'); 使用
 6. @include('folders.filenamewithout.blade.php') 引入文件，无需写.blade.php
 
