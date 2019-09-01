@@ -42,20 +42,32 @@
 1. Bean 的两种写法
     > 1. ```<bean id=""class=""></bean>```
     > 2. ```<bean id=""class=""/>```
-2. Bean 的 id 属性和 name 属性作用一样，用来作为Bean的名称，id和name属性在IOC容器中必须是唯一的
-3. Bean 的名称中如果有特殊字符，就需要使用name属性
-4. Bean 的 class 属性，用于设置一个类的完全路径名称，主要作用是IOC容器生成类的实例
+2. Bean 的 id 属性和 name 属性作用一样，用来作为 Bean 的名称，id 和 name 属性在 IOC 容器中必须是唯一的
+3. Bean 的名称中如果有特殊字符，就需要使用 name 属性
+4. Bean 的 class 属性，用于设置一个类的完全路径名称，主要作用是 IOC 容器生成类的实例
 5. 配置 Bean，将对象的创建权交给 Spring，实现控制反转
-6. Bean的作用域默认是singleton，即Bean以单例模式存在，一个IOC容器中只有一个Bean实例
-    > 通过配置bean标签的scope属性的值为prototype，可以让我们每次在getBean的时候都重新生成一个新的对象
-    > 多例模式一般用在Spring整合struct2的时候，struct2的action是多例的，struct2要交给Spring管理，这时bean标签的scope值就要设置成prototype
+6. Bean 的作用域默认是 singleton，即 Bean 以单例模式存在，一个 IOC 容器中只有一个 Bean 实例
+    > 通过配置 bean 标签的 scope 属性的值为 prototype，可以让我们每次在 getBean 的时候都重新生成一个新的对象
+    > 多例模式一般用在 Spring 整合 struct2 的时候，struct2 的 action 是多例的，struct2 要交给 Spring 管理，这时 bean 标签的 scope 值就要设置成 prototype
 
-## Bean的生命周期
+## Bean 的生命周期
 
-1. Spring初始化bean或者销毁bean时，可以调用bean的两个生命周期方法
-    > 1. init-method 当bean被载入到容器时调用
-    > 2. destory-method 当bean从容器中删除的时候调用(scope为singleton时有效)
-2. 想调用destory-method，需要使用ClassPathXmlApplicationContext.close()方法
+1. Spring 帮我们实例化对象的时候，一共经历了 11 个过程，其中第 5 和第 8 步最重要
+    > 1. 实例化类
+    > 2. 封装属性
+    > 3. 如果 Bean 实现 BeanNameAware 执行 setBeanName | 设置 Bean 的名称
+    > 4. 如果 Bean 实现 BeanFactoryName 或者 ApplicationContextAware 设置工厂 setBeanFactory 或者上下文对象 setApplicationContext | 了解工厂的信息
+    > 5. 如果存在类实现 BeanPostProcessor(后处理类)，执行 postProcessBeforeinitialization | 初始化前方法
+    > 6. 如果 Bean 实现 InitializingBean，执行 afterPropertiesSet | 属性设置后执行的方法
+    > 7. 调用 ```<bean init-method="init">```, 指定初始化方法
+    > 8. 如果存在类实现 BeanPostProcessor(处理 Bean)，执行 postProcessAfterInitialization | 初始化后方法，至此对象初始化完成
+    > 9. 执行业务逻辑方法，权限校验应该在 8 执行
+    > 10. 如果 Bean 实现 DisposableBean，执行 destory 方法 | 执行 Spring 的销毁方法
+    > 11. 调用 ```<bean destory-method="customerDestory">```, 指定销毁方法
+2. Spring 初始化 bean 或者销毁 bean 时，可以调用 bean 的两个生命周期方法
+    > 1. init-method 当 bean 被载入到容器时调用
+    > 2. destory-method 当 bean 从容器中删除的时候调用 (scope 为 singleton 时有效)
+3. 想调用 destory-method，需要使用 ClassPathXmlApplicationContext.close() 方法
 
 ## IOC 和 DI
 
@@ -66,6 +78,77 @@
     > 依赖注入的前提是控制反转
     > 在 Spring 创建整个对象的过程中，将对象所依赖的属性注入进去
 3. [IOC 和 DI 基础](https://www.iteye.com/blog/jinnianshilongnian-1413846)
+
+## 三种属性的依赖注入方式
+
+### 1. 构造方法
+
+1. 构造方法属性依赖注入，无需为属性设置 set 方法
+
+2. 构造方法属性依赖注入，需要 constructor-arg 标签，name 属性为属性的名称，value 属性为属性的值
+
+```xml
+    <bean id="user" class="com.imooc.ioc.demo4.User">
+        <constructor-arg name="name" value="张三"/>
+        <constructor-arg name="age" value="23"/>
+    </bean>
+```
+
+### 2. set 方法 比较习惯此方法
+
+1. 在配置文件中，通过 property 标签注入属性
+
+2. 需要在类中为属性设置 set 方法，没有 set 方法，在 Spring 配置文件中会报错
+
+3. 通过在Spring配置文件中，可以设置类的各种类型的属性，比如对象类型，List，Set等
+    > 1. 当类的属性为对象类型时，需要先为此对象配置bean
+    > 2. 当类的属性为对象类型时，Spring配置中的property属性的name值为类的名称，使用ref代表类的beanid
+    > 3. 当类的属性为对象类型时，需要为该对象配置set方法
+
+```xml
+    <bean id="person" class="com.imooc.ioc.demo4.Person">
+        <property name="name" value="李四" />
+        <property name="age" value="32" />
+    </bean>
+
+    <bean id="cat" class="com.imooc.ioc.demo4.Cat">
+        <property name="name" value="ketty"/>
+    </bean>
+```
+
+```java
+package com.imooc.ioc.demo4;
+
+public class Person {
+    private String name;
+    private Integer age;
+    private Cat cat;
+
+    public void setCat(Cat cat) {
+        this.cat = cat;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+### 3.
 
 ## 控制反转和依赖注入的简单演示
 
@@ -203,20 +286,20 @@ Spring 方式，对象的创建权交给了 Spring，
 ```xml
     <!-- 配置 Bean-->
     <!--    3. 实例工厂的方式 -->
-    <!--先配置工厂的实例-->
+    <!-- 先配置工厂的实例 -->
     <bean id="bean3Factory" class="com.imooc.ioc.demo2.Bean3Factory" />
-    <!--再配置类的实例-->
+    <!-- 再配置类的实例 -->
     <bean id="bean3" factory-bean="bean3Factory" factory-method="craeteBean3" />
 ```
 
 ```java
     // 配置实例工厂
     /**
-     * Bean3的实例工厂
+     * Bean3 的实例工厂
      */
     public class Bean3Factory {
         public Bean3 createBean3() {
-            System.out.println("Bean3Factory中的createBean3方法已经执行了...");
+            System.out.println("Bean3Factory 中的 createBean3 方法已经执行了...");
             return new Bean3();
         }
     }
@@ -229,9 +312,8 @@ Spring 方式，对象的创建权交给了 Spring，
         public void demo3() {
             // 读取配置文件，创建工厂
             ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-            // 通过Spring工厂获得类的实例
+            // 通过 Spring 工厂获得类的实例
             Bean3 bean3 = (Bean3) applicationContext.getBean("bean3");
         }
     }
 ```
- 
