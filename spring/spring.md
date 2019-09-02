@@ -167,7 +167,7 @@ public class Person {
 
 1. #{'使用字符串'}
 
-2. #{beanId} 使用另一个Bean
+2. #{beanId} 使用另一个 Bean
 
 3. #{beanId.context.toUpperCase()} 使用指定属性，并使用方法
 
@@ -175,17 +175,17 @@ public class Person {
 
 ### 5. 复杂类型属性注入
 
-> 主要用于Spring整合其他框架
+> 主要用于 Spring 整合其他框架
 
 1. 数组类型的属性注入
 
-2. List集合类型的属性注入
+2. List 集合类型的属性注入
 
-3. Set集合类型的属性注入
+3. Set 集合类型的属性注入
 
-4. Map集合类型的属性注入
+4. Map 集合类型的属性注入
 
-5. Properties类型的属性注入
+5. Properties 类型的属性注入
 
 ```xml
  <!-- 复杂类型的属性注入 -->
@@ -206,7 +206,7 @@ public class Person {
                 <value>333</value>
             </list>
         </property>
-        <!-- Set类型的属性注入 -->
+        <!-- Set 类型的属性注入 -->
         <property name="set">
             <set>
                 <value>ddd</value>
@@ -214,7 +214,7 @@ public class Person {
                 <value>fff</value>
             </set>
         </property>
-        <!-- Map类型的属性注入 -->
+        <!-- Map 类型的属性注入 -->
         <property name="map">
             <map>
                 <entry key="aaa" value="111" />
@@ -222,7 +222,7 @@ public class Person {
                 <entry key="ccc" value="333" />
             </map>
         </property>
-        <!-- Properties类型的属性注入 -->
+        <!-- Properties 类型的属性注入 -->
         <property name="properties">
             <props>
                 <prop key="username">root</prop>
@@ -231,6 +231,32 @@ public class Person {
         </property>
     </bean>
 ```
+
+## 使用注解定义 Bean
+
+1. Spring2.5 引入注解定义 Bean
+    > 1. 使用注解定义 Bean，首先需要在 pom.xml 中引入 spring-aop
+    > 2. 在 pom.xml 内定义如下
+
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- 开启注解扫描 -->
+        <!-- 注解扫描的作用就是去每个包的类上面去找有没有某个注解，如果有注解，就交给 Spring 管理 -->
+        <context:component-scan base-package="com.imooc.demo1" />
+    </beans>
+    ```
+
+2. @Component 描述 Spring 框架中的 Bean
+
+3. 除了 @Component 之外，还有三个基本功能和 @Component 等效的注解:
+    > 1. @Repository 用于对 Dao 实现类进行标记
+    > 2. @Service 用于对 Service 实现类进行标记
+    > 3. @Controller 用于对 Controller 实现类进行标记
+
 ## 控制反转和依赖注入的简单演示
 
 ```xml
