@@ -163,6 +163,7 @@ public class Person {
     4. #{T(java.lang.Math).PI} 使用静态字段或者方法
 
 5. 复杂类型属性注入
+    > 主要用于Spring整合其他框架
     1. 数组类型的属性注入
     2. List集合类型的属性注入
     3. Set集合类型的属性注入
@@ -176,6 +177,50 @@ public class Person {
     <bean id="cat" class="com.imooc.ioc.demo4.Cat" p:name="ketty"/>
 ```
 
+```xml
+ <!-- 复杂类型的属性注入 -->
+    <bean id="collectionBean" class="com.imooc.ioc.demo5.CollectionBean">
+        <!-- 数组类型的属性注入 -->
+        <property name="arrs">
+            <list>
+                <value>aaa</value>
+                <value>bbb</value>
+                <value>ccc</value>
+            </list>
+        </property>
+        <!-- 数组类型的属性注入 -->
+        <property name="list">
+            <list>
+                <value>111</value>
+                <value>222</value>
+                <value>333</value>
+            </list>
+        </property>
+        <!-- Set类型的属性注入 -->
+        <property name="set">
+            <set>
+                <value>ddd</value>
+                <value>eee</value>
+                <value>fff</value>
+            </set>
+        </property>
+        <!-- Map类型的属性注入 -->
+        <property name="map">
+            <map>
+                <entry key="aaa" value="111" />
+                <entry key="bbb" value="222" />
+                <entry key="ccc" value="333" />
+            </map>
+        </property>
+        <!-- Properties类型的属性注入 -->
+        <property name="properties">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="password">1234</prop>
+            </props>
+        </property>
+    </bean>
+```
 ## 控制反转和依赖注入的简单演示
 
 ```xml
