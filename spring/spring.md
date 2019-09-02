@@ -156,19 +156,29 @@ public class Person {
 
 3. 属性类型为对象的话，应该使用 p:beanid-ref="beanid"
 
-4. SpEL Spring Expression Language 注入属性
-    1. #{'使用字符串'}
-    2. #{beanId} 使用另一个Bean
-    3. #{beanId.context.toUpperCase()} 使用指定属性，并使用方法
-    4. #{T(java.lang.Math).PI} 使用静态字段或者方法
+### 4. SpEL Spring Expression Language 注入属性
 
-5. 复杂类型属性注入
-    > 主要用于Spring整合其他框架
-    1. 数组类型的属性注入
-    2. List集合类型的属性注入
-    3. Set集合类型的属性注入
-    4. Map集合类型的属性注入
-    5. Properties类型的属性注入
+1. #{'使用字符串'}
+
+2. #{beanId} 使用另一个Bean
+
+3. #{beanId.context.toUpperCase()} 使用指定属性，并使用方法
+
+4. #{T(java.lang.Math).PI} 使用静态字段或者方法
+
+### 5. 复杂类型属性注入
+
+> 主要用于Spring整合其他框架
+
+1. 数组类型的属性注入
+
+2. List集合类型的属性注入
+
+3. Set集合类型的属性注入
+
+4. Map集合类型的属性注入
+
+5. Properties类型的属性注入
 
 ```xml
     <!--p 命名空间的方式注入属性 -->
