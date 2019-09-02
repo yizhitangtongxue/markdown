@@ -100,10 +100,10 @@
 
 2. 需要在类中为属性设置 set 方法，没有 set 方法，在 Spring 配置文件中会报错
 
-3. 通过在Spring配置文件中，可以设置类的各种类型的属性，比如对象类型
-    > 1. 当类的属性为对象类型时，需要先为此对象配置bean
-    > 2. 当类的属性为对象类型时，Spring配置中的property属性的name值为类的名称，使用ref代表类的beanid
-    > 3. 当类的属性为对象类型时，需要为该对象配置set方法
+3. 通过在 Spring 配置文件中，可以设置类的各种类型的属性，比如对象类型
+    > 1. 当类的属性为对象类型时，需要先为此对象配置 bean
+    > 2. 当类的属性为对象类型时，Spring 配置中的 property 属性的 name 值为类的名称，使用 ref 代表类的 beanid
+    > 3. 当类的属性为对象类型时，需要为该对象配置 set 方法
 
 ```xml
     <bean id="person" class="com.imooc.ioc.demo4.Person">
@@ -148,15 +148,29 @@ public class Person {
 }
 ```
 
-### 3. p命名空间注入属性
+### 3. p 命名空间注入属性
 
-1. 首先需要在Spring的配置文件中写入```xmlns:p="http://www.springframework.org/schema/p"```
+1. 首先需要在 Spring 的配置文件中写入 ```xmlns:p="http://www.springframework.org/schema/p"```
 
-2. 使用p:属性名称=属性值注入属性
+2. 使用 p: 属性名称 = 属性值注入属性
 
-3. 属性类型为对象的话，应该使用p:beanid-ref="beanid"
+3. 属性类型为对象的话，应该使用 p:beanid-ref="beanid"
+
+4. SpEL Spring Expression Language 注入属性
+    1. #{'使用字符串'}
+    2. #{beanId} 使用另一个Bean
+    3. #{beanId.context.toUpperCase()} 使用指定属性，并使用方法
+    4. #{T(java.lang.Math).PI} 使用静态字段或者方法
+
+5. 复杂类型属性注入
+    1. 数组类型的属性注入
+    2. List集合类型的属性注入
+    3. Set集合类型的属性注入
+    4. Map集合类型的属性注入
+    5. Properties类型的属性注入
 
 ```xml
+    <!--p 命名空间的方式注入属性 -->
     <bean id="person" class="com.imooc.ioc.demo4.Person" p:name="李四" p:age="32" p:cat-ref="cat" />
 
     <bean id="cat" class="com.imooc.ioc.demo4.Cat" p:name="ketty"/>
