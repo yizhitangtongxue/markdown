@@ -156,6 +156,13 @@ public class Person {
 
 3. 属性类型为对象的话，应该使用 p:beanid-ref="beanid"
 
+```xml
+    <!--p 命名空间的方式注入属性 -->
+    <bean id="person" class="com.imooc.ioc.demo4.Person" p:name="李四" p:age="32" p:cat-ref="cat" />
+
+    <bean id="cat" class="com.imooc.ioc.demo4.Cat" p:name="ketty"/>
+```
+
 ### 4. SpEL Spring Expression Language 注入属性
 
 1. #{'使用字符串'}
@@ -179,13 +186,6 @@ public class Person {
 4. Map集合类型的属性注入
 
 5. Properties类型的属性注入
-
-```xml
-    <!--p 命名空间的方式注入属性 -->
-    <bean id="person" class="com.imooc.ioc.demo4.Person" p:name="李四" p:age="32" p:cat-ref="cat" />
-
-    <bean id="cat" class="com.imooc.ioc.demo4.Cat" p:name="ketty"/>
-```
 
 ```xml
  <!-- 复杂类型的属性注入 -->
