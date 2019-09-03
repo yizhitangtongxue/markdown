@@ -257,6 +257,92 @@ public class Person {
     > 2. @Service 用于对 Service 实现类进行标记
     > 3. @Controller 用于对 Controller 实现类进行标记
 
+## Spring 的属性注入 - 注解方式
+
+1. 注解的方式为简单类型的属性注入值，可以没有 set 方法
+    > 如果属性提供了 set 方法，注解需要写在 set 方法上
+
+    ```java
+    package com.imooc.demo1;
+
+    import org.springframework.beans.factory.annotation.Value;
+    import org.springframework.stereotype.Service;
+
+    /**
+     * Spring 的 Bean 管理的注解方式：
+     * * 传统方式需要去 xml 中配置 <bean id=""class=""></bean>
+     */
+    @Service("userService")
+    public class UserService {
+        // Spring 注解的方式属性注入，没有 set 方法
+        // 如果属性提供了 set 方法，注解需要写在 set 方法上
+        @Value("米饭")
+        private String something;
+        public String sayHello(String name) {
+            return "Hello" +name;
+        }
+
+        public void eat() {
+            System.out.println("eat:"+something);
+        }
+    }
+
+    ```
+
+2. 使用 @Autowired 进行自动注入
+    > 1. 默认按照类型进行注入，如果存在两个相同 Bean 类型相同，则按名称注入
+    > 2. 注入时可以针对成员变量或者 set 方法
+    > 3. 通过 @Autowired 的 required 属性，设置一定要找到匹配的 Bean
+
+    ```java
+        @Autowired
+        private UserDao userDao;
+    ```
+
+3. 使用 @Qualifier 指定注入 Bean 的名称
+    > 1. 使用 @Qualifier("Bean 名称") 强制指定要注入的 Bean 的名称
+
+    ```java
+        @Autowired
+        @Qualifier("Bean 名称")
+        private UserDao userDao;
+    ```
+
+4. 推荐使用 @Resource，相当于 @Autowired 和 @Qualifier 的组合
+    > 1. @Resource 和 @Autowire 注解功能相似
+
+    ```java
+        @Resource(name="Bean 名称")
+        private UserDao userDao;
+    ```
+
+## Spring 的其他注解
+
+1. Spring 在初始化 Bean 或者销毁 Bean 时，可以调用 Bean 的两个生命周期方法
+
+2. 当 Bean 被载入到容器的时候会调用 init 方法
+    > 注解方式：@PostConstruct
+    > 初始化
+
+3. 当 Bean 从容器中删除调用 destory 方法，仅当 scope 为 singleton 有效
+    > 注解方式：@PreDestory
+    > 销毁
+
+4. @Scope 注解用于指定 Bean 的作用范围
+    > 使用注解配置的 Bean 和 ```<bean>``` 配置的一样，默认作用域都是 singleton
+
+## 传统 XML 配置和注解配置混合使用
+
+1. XML 的优势在于：结构清晰，易于阅读
+    > XML 用于管理类
+2. 注解的优势在于：开发便捷，属性注入方便
+    > 注解用于完成属性注入
+3. XML 和注解的混合开发：
+    > 1. 引入 context 命名空间
+    > 2. 在配置文件中添加 context:annotation-config 标签
+4. context:annotation-config 标签是单独开启属性注入，只能使用属性注入
+    > ```<context:component-scan base-package="com.imooc" />``` 这是开启了包扫描，包括了属性注入，可以使用各种注解 (@Serivce、@Repistory 等)
+
 ## 控制反转和依赖注入的简单演示
 
 ```xml
