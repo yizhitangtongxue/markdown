@@ -148,3 +148,150 @@
             System.out.println("最终通知...=>");
         }
     ```
+
+### 通过 @Pointcut 为切点命名
+
+1. 在每个通知内定义切点，工作量大，不易维护，对于重复的切点，可以使用 @Pointcut 进行定义
+
+2. 切点方法：private void 无参数方法，方法名为切点名
+
+3. 当通知多个切点时，可以用 || 进行连接
+
+#### 通过 @Pointcut 为切点命名 案例
+
+```java
+    // 定义切点
+    @Pointcut(value = "execution(* com.imooc.aspectJ.demo1.ProductDao.save(..))")
+    private void myPointcut1(){}
+    // 调用
+    @Before(value = "myPointcut1()")
+    public void before(JoinPoint joinPoint) {
+        // 通过 JoinPoint 对象获得切入点信息
+        System.out.println("前置通知...=>"+joinPoint);
+    }
+```
+
+### AspectJ的XML配置方式
+
+1. 编写切面类的具体功能实现
+
+    ```java
+        package com.imooc.aspectJ.demo2;
+
+        public class MyAspectXml {
+
+            // 前置通知
+            public void before() {
+                System.out.println("XML方式的前置通知...=>");
+            }
+        }
+    ```
+
+2. 接口编写
+
+    ```java
+    package com.imooc.aspectJ.demo2;
+
+    public interface CustomerDao {
+        public void save();
+        public void update();
+        public void delete();
+        public void findOne();
+        public void findAll();
+    }
+
+    ```
+
+3. 接口实现
+
+    ```java
+    package com.imooc.aspectJ.demo2;
+
+    public class CustomerDaoImpl implements CustomerDao {
+        @Override
+        public void save() {
+            System.out.println("保存客户...");
+        }
+
+        @Override
+        public void update() {
+            System.out.println("修改客户...");
+        }
+
+        @Override
+        public void delete() {
+            System.out.println("删除客户...");
+        }
+
+        @Override
+        public void findOne() {
+            System.out.println("查询一个客户...");
+        }
+
+        @Override
+        public void findAll() {
+            System.out.println("查询多个客户...");
+        }
+    }
+
+    ```
+
+4. Spring配置文件编写
+
+    ```xml
+        <?xml version="1.0" encoding="UTF-8"?>
+    <beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+        <!--XMl的配置方式完成AOP的开发-->
+        <!--配置目标类-->
+        <bean id="customerDao" class="com.imooc.aspectJ.demo2.CustomerDaoImpl" />
+
+        <!--配置切面类-->
+        <bean id="myAspectXml" class="com.imooc.aspectJ.demo2.MyAspectXml"/>
+
+        <!--aop相关的配置-->
+        <aop:config>
+            <!--配置切入点，哪些类的哪些方法可以被增强-->
+            <aop:pointcut id="pointcut1" expression="execution(* com.imooc.aspectJ.demo2.CustomerDaoImpl.save(..))"/>
+            <!--配置AOP的切面，指定使用的切面-->
+            <aop:aspect ref="myAspectXml">
+                <!--配置前置通知-->
+                <aop:before method="before" pointcut-ref="pointcut1"/>
+            </aop:aspect>
+        </aop:config>
+    </beans>
+    ```
+
+5. 测试代码
+
+    ```java
+    package com.imooc.aspectJ.demo2;
+
+    import org.junit.Test;
+    import org.junit.runner.RunWith;
+    import org.springframework.test.context.ContextConfiguration;
+    import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+    import javax.annotation.Resource;
+
+    @RunWith(SpringJUnit4ClassRunner.class)
+    @ContextConfiguration("classpath:applicationContext2.xml")
+    public class SpringDemo2 {
+
+        @Resource(name="customerDao")
+        private CustomerDao customerDao;
+
+        @Test
+        public void demo1() {
+            customerDao.save();
+            customerDao.update();
+            customerDao.delete();
+            customerDao.findAll();
+            customerDao.findOne();
+        }
+    }
+
+    ```

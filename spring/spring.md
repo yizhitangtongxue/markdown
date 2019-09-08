@@ -1247,7 +1247,7 @@ CGLIB 采用底层的字节码技术，可以为一个类创建子类，解决�
 5. 使用 AspectJ 需要导入 SpringAOP 和 AspectJ 相关的 Jar 包
 
     ```xml
-    <!--AspectJ注解开发，自动代理需要的依赖：pom.xml-->
+    <!--AspectJ 注解开发，自动代理需要的依赖：pom.xml-->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -1301,55 +1301,55 @@ CGLIB 采用底层的字节码技术，可以为一个类创建子类，解决�
         </dependency>
     </dependencies>
 
-    <!--AspectJ注解开发，自动代理需要的配置文件：applicationContext.xml-->
-    <!--可以复制spring-framework框架内的的xsd-configuration.html中aop相关的配置:the aop schema-->
+    <!--AspectJ 注解开发，自动代理需要的配置文件：applicationContext.xml-->
+    <!-- 可以复制 spring-framework 框架内的的 xsd-configuration.html 中 aop 相关的配置: the aop schema-->
     <?xml version="1.0" encoding="UTF-8"?>
         <beans xmlns="http://www.springframework.org/schema/beans"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
                 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
-        <!--开启AspectJ注解开发，自动代理-->
+        <!-- 开启 AspectJ 注解开发，自动代理 -->
         <aop:aspectj-autoproxy />
         </beans>
     ```
 
-### AspectJ不同的通知类型
+### AspectJ 不同的通知类型
 
-1. @Before前置通知，相当于BeforeAdvice
+1. @Before 前置通知，相当于 BeforeAdvice
 
-2. @AfterRetunning后置通知，相当于AfterRetunningAdvice
+2. @AfterRetunning 后置通知，相当于 AfterRetunningAdvice
 
-3. @Around环绕通知，相当于MethodInterceptor
+3. @Around 环绕通知，相当于 MethodInterceptor
 
-4. @AfterThrowing异常抛出通知，相当于ThrowAdvice
+4. @AfterThrowing 异常抛出通知，相当于 ThrowAdvice
 
-5. @After最终final通知，不论是否异常，该通知都会执行
+5. @After 最终 final 通知，不论是否异常，该通知都会执行
 
-6. @DeclareParents引介通知，相当于IntroductionInterceptor(暂未学习)
+6. @DeclareParents 引介通知，相当于 IntroductionInterceptor(暂未学习)
 
-### 通过execution函数，可以定义切点的方法切入
+### 通过 execution 函数，可以定义切点的方法切入
 
 #### 语法
 
-1. execution(<访问修饰符 - 可选>?<返回类型><方法名><(参数)><异常 - 可选>)
+1. execution(<访问修饰符 - 可选>?< 返回类型 >< 方法名 ><(参数)>< 异常 - 可选 >)
 
 #### 案例
 
-1. 匹配所有类public方法 (..)代表任意参数
+1. 匹配所有类 public 方法 (..) 代表任意参数
     > excution(public * *(..))
 
 2. 匹配指定包下所有类方法，不包含子包
     > excution(* com.imooc.dao.*(..))
 
-3. 匹配指定包下所有类方法，包含子包(包含子孙包下所有类)
+3. 匹配指定包下所有类方法，包含子包 (包含子孙包下所有类)
     > excution(* com.imooc.dao..*(..))
 
 4. 匹配指定类所有方法
     > excution(* com.imooc.service.UserService.*(..))
 
-5. 匹配实现特定接口所有类方法(+代表子类)
+5. 匹配实现特定接口所有类方法 (+ 代表子类)
     > excution(* com.imooc.dao.GenericDao+.*(..))
 
-6. 匹配所有save开头的方法
+6. 匹配所有 save 开头的方法
     > excution(* save* (..))
